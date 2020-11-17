@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { useStateValue } from "../components/State";
 import { Text, StyleSheet, Button, View, TextInput, TouchableOpacity } from 'react-native';
 import { getStyles, Theme } from '../utils';
@@ -8,6 +9,7 @@ const Search = ({
   mode,
 }) => {
   const [{ isWeb, dimensions, searchConfig }, dispatch] = useStateValue();
+  const router = useRouter();
 
   const [query, setQuery] = useState(searchConfig.q || '');
   const [near, setNear] = useState(searchConfig.near || '');
@@ -23,7 +25,7 @@ const Search = ({
       if (query) searchUrl.searchParams.append('q', query);
       if (near) searchUrl.searchParams.append('near', near);
 
-      window.location = searchUrl.toString();
+      router.push(`/search?${searchUrl.searchParams.toString()}`);
 
       return;
     }
